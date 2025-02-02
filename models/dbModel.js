@@ -51,6 +51,7 @@ const toDoModel = mongoose.model('todo',{
     },
     'priority_level' : {
         type : String,
+        required : true,
     },
     'is_complete' : {
         type : String,
@@ -79,6 +80,9 @@ const completedModel = mongoose.model('completed',{
         type : String,
     },
     'priority' : {
+        type : String,
+    },
+    'priority_level' : {
         type : String,
     },
     'is_complete' : {
