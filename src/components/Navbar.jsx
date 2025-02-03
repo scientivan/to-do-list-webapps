@@ -1,8 +1,20 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { logout } from '../api';
 
 const Navbar = ({ isLoggedIn, onLogout }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // State untuk mengontrol menu
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      onLogout();
+      navigate('/login');
+    } catch (error) {
+      console.error('Gagal logout:', error);
+    }
+  };
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -15,28 +27,13 @@ const Navbar = ({ isLoggedIn, onLogout }) => {
           To-Do App
         </Link>
 
-        {/* Hamburger Icon untuk layar kecil */}
         <button
           onClick={toggleMenu}
           className="text-white focus:outline-none md:hidden"
         >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M4 6h16M4 12h16m-7 6h7"
-            ></path>
-          </svg>
+          {/* Hamburger Icon */}
         </button>
 
-        {/* Menu untuk layar besar */}
         <div className="hidden md:flex space-x-4">
           {isLoggedIn ? (
             <>
@@ -44,10 +41,10 @@ const Navbar = ({ isLoggedIn, onLogout }) => {
                 Dashboard
               </Link>
               <Link to="/create" className="text-white hover:underline">
-                Create Todo
+                Buat Todo
               </Link>
               <button
-                onClick={onLogout}
+                onClick={handleLogout}
                 className="text-white bg-red-500 px-3 py-1 rounded hover:underline"
               >
                 Logout
@@ -61,7 +58,7 @@ const Navbar = ({ isLoggedIn, onLogout }) => {
         </div>
       </div>
 
-      {/* Menu untuk layar kecil */}
+      {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="md:hidden mt-4">
           {isLoggedIn ? (
@@ -78,11 +75,11 @@ const Navbar = ({ isLoggedIn, onLogout }) => {
                 className="block text-white py-2 hover:bg-blue-500"
                 onClick={toggleMenu}
               >
-                Create Todo
+                Buat Todo
               </Link>
               <button
                 onClick={() => {
-                  onLogout();
+                  handleLogout();
                   toggleMenu();
                 }}
                 className="block w-full text-white bg-red-500 px-3 py-2 rounded mt-2 hover:bg-red-600"

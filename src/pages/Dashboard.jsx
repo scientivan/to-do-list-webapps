@@ -1,36 +1,63 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import TodoList from '../components/TodoList';
 import FilterBar from '../components/FilterBar';
 import AddTodoButton from '../components/AddTodoButton';
+import { 
+  getTodos, 
+  getCompletedTodos, 
+  toggleTodoStatus, 
+  deleteTodo 
+} from '../api';
 
-const Dashboard = ({todos, setTodos}) => {
-
+const Dashboard = () => {
+  const [todos, setTodos] = useState([]);
   const [statusFilter, setStatusFilter] = useState('all');
   const [priorityFilter, setPriorityFilter] = useState('all');
+  const [sort, setSort] = useState('');
 
-  const handleToggleComplete = (id) => {
-    setTodos(todos.map(todo => 
-      todo.id === id ? { ...todo, completed: !todo.completed } : todo
-    ));
+  const fetchTodos = async () => {
+    try {
+      let data;
+      if (statusFilter === 'completed') {
+        data = await getCompletedTodos(sort);
+      } else {
+        data = await getTodos(sort);
+      }
+      setTodos(data);
+    } catch (error) {
+      console.error('Gagal memuat todo:', error);
+    }
   };
 
-  const handleEdit = (id) => {
-    // Handle edit logic here
-    console.log('Edit todo with id:', id);
+  useEffect(() => {
+    fetchTodos();
+  }, [statusFilter, sort]);
+
+  const handleToggleComplete = async (id) => {
+    try {
+      await toggleTodoStatus(id);
+      await fetchTodos(); // Refresh data setelah update
+    } catch (error) {
+      console.error('Gagal mengubah status:', error);
+    }
   };
 
-  const handleDelete = (id) => {
-    setTodos(todos.filter(todo => todo.id !== id));
+  const handleDelete = async (id) => {
+    try {
+      await deleteTodo(id);
+      await fetchTodos(); // Refresh data setelah delete
+    } catch (error) {
+      console.error('Gagal menghapus todo:', error);
+    }
   };
 
   const filteredTodos = todos.filter(todo => {
-    // Filter by status
-    if (statusFilter === 'completed' && !todo.completed) return false;
+    // Filter by status (untuk incomplete)
     if (statusFilter === 'incomplete' && todo.completed) return false;
-
+    
     // Filter by priority
     if (priorityFilter !== 'all' && todo.priority !== priorityFilter) return false;
-
+    
     return true;
   });
 
@@ -40,11 +67,11 @@ const Dashboard = ({todos, setTodos}) => {
       <FilterBar
         onFilter={setStatusFilter}
         onPriorityFilter={setPriorityFilter}
+        onSort={setSort}
       />
       <TodoList
         todos={filteredTodos}
         onToggleComplete={handleToggleComplete}
-        onEdit={handleEdit}
         onDelete={handleDelete}
       />
       <AddTodoButton />
