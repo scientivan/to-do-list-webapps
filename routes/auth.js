@@ -9,6 +9,18 @@ const passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
 const router = express.Router();
 
+
+router.get('/check-auth', (req, res) => {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  
+  if (req.isAuthenticated()) {
+    res.status(200).json({ authenticated: true });
+  } else {
+    res.status(401).json({ authenticated: false });
+  }
+});
+
 // Register user
 router.post('/register', [
   check('email', "Email tidak valid!").isEmail(),

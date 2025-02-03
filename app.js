@@ -12,9 +12,24 @@ const flash = require('connect-flash');
 const passport = require('passport')
 const path = require('path');
 const MongoStore = require('connect-mongo')
+const cors = require('cors')
+
+const authRoutes = require('./routes/auth');
+
+
+
+const corsOptions = {
+    origin: 'http://localhost:5173',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+  };
+
 
 db.connectDB()
 const app = express()
+app.use(cors(corsOptions));
+app.use('/auth', authRoutes);
 app.use(express.json())
 app.use(expressLayouts)
 app.use(express.urlencoded())
