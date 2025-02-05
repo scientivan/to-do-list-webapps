@@ -10,11 +10,11 @@ var GoogleStrategy = require('passport-google-oauth20').Strategy;
 const router = express.Router();
 
 
+
 router.get('/check-auth', (req, res) => {
   res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
   res.header('Access-Control-Allow-Credentials', 'true');
-  
-  if (req.isAuthenticated()) {
+  if (res.locals.isAuthenticated) {
     res.status(200).json({ authenticated: true });
   } else {
     res.status(401).json({ authenticated: false });
@@ -22,16 +22,14 @@ router.get('/check-auth', (req, res) => {
 });
 
 // Register user
-router.post('/register', [
-  check('email', "Email tidak valid!").isEmail(),
-  body('email').custom(async (value) => {
-    const duplicate = await userModel.findOne({ 'email': value });
-    if (duplicate) {
-      throw new Error('Email sudah terdaftar!');
-    }
-    return true;
-  })
-], async (req, res) => {
+router.post('/register', async (req, res) => {
+
+  console.log(req.body)
+  const duplicate = await userModel.findOne({ 'email': req.body.email });
+  if (duplicate) {
+    throw new Error('Email sudah terdaftar!');
+  }
+
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -127,7 +125,8 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ message: 'Password salah' });
     } else {
       // Set session ID or return a token here for API
-      req.session.user = { id: 'user-id', email: req.body.email };
+
+      req.session.user = { id: crypto.randomUUID(), email: req.body.email };
       res.status(200).json({
         message: 'Berhasil masuk ke akun',
         user: userAccount,
@@ -137,14 +136,17 @@ router.post('/login', async (req, res) => {
 });
 
 // Logout user
-router.post('/logout', checkAuth.isAuthenticated, (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
+router.post('/logout', (req, res) => {
+  console.log('hai aku dipanggil')
+  req.session.destroy((err) => {
+      if (err) {
           return res.status(500).json({ message: 'Logout gagal' });
-        }
-        res.clearCookie('connect.sid'); // Menghapus cookie session
-        res.status(200).json({ message: 'Logout sukses' });
-    })
+      }
+      res.clearCookie('connect.sid'); // Menghapus cookie session
+      res.locals.isAuthenticated = undefined; // Pindahkan ke sini
+      res.status(200).json({ message: 'Logout sukses' });
+  });
 });
+
 
 module.exports = router;

@@ -58,7 +58,7 @@ app.use(passport.session());
 
 // middleware yang bakal ngirimin status apakah isAuthenticated true or false ke nav.ejs 
 app.use((req, res, next) => {
-    res.locals.isAuthenticated = req.session.user_id; // true jika user sudah login, false jika tidak
+    res.locals.isAuthenticated = req.session.user; // true jika user sudah login, false jika tidak
     next();
 });
 

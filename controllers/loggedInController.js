@@ -2,7 +2,8 @@ const { toDoModel, completedModel } = require('../models/dbModel')
 
 exports.mainpage = async (req, res) => {
     try {
-        const list = await toDoModel.find({ 'user_id': req.session.user_id })
+        const list = await toDoModel.find({ 'user_id': req.session.user.id })
+        console.log(list)
         res.status(200).json({
             message: 'Success',
             list: list
@@ -21,7 +22,7 @@ exports.sort = async (req, res) => {
             sortCriteria = { priority_level: -1 };
         }
 
-        const list = await toDoModel.find({ 'user_id': req.session.user_id }).sort(sortCriteria)
+        const list = await toDoModel.find({ 'user_id': req.session.user.id }).sort(sortCriteria)
         res.status(200).json({
             message: 'List sorted successfully',
             list: list
@@ -33,33 +34,40 @@ exports.sort = async (req, res) => {
 
 exports.addData = async (req, res) => {
     try {
-        let priorityLevel;
-        if (req.body.priority === "Low") {
-            priorityLevel = 1;
-        } else if (req.body.priority === "Mid") {
-            priorityLevel = 2;
-        } else if (req.body.priority === "High") {
-            priorityLevel = 3;
+        let priorityLevel; 
+        
+        if (req.body.priority == "Low") {
+            priorityLevel = '1';
+        } else if (req.body.priority == "Mid") {
+            priorityLevel = '2';
+        } else if (req.body.priority == "High") {
+            priorityLevel = '3';
         }
 
-        console.log(req.body)
         const taskData = {
-            ...req.body,
-            priority_level: priorityLevel,
-            user_id: req.session.user_id
+            "title" : req.body.title,
+            "description" : req.body.description,
+            "due_date" : req.body.due_date,
+            "priority_level": priorityLevel,
+            "priority" : req.body.priority,
+            "user_id": req.session.user.id
         }
 
-        await toDoModel.insertMany(taskData)
-        res.status(201).json({ message: 'Task successfully added', task: taskData })
+        console.log("Task data to insert:", taskData); // Debugging log
+
+        await toDoModel.insertMany(taskData); // Cek apakah error dari sini
+        res.status(201).json({ message: 'Task successfully added', task: taskData });
     } catch (err) {
-        res.status(500).json({ message: 'Error adding task', error: err.message })
+        // console.error("Error saat menyimpan data:", err); // Debugging log
+        res.status(500).json({ message: 'Error adding task', error: err.message });
     }
-}
+};
+
 
 exports.editData = async (req, res) => {
     try {
         
-        const updatedTask = await toDoModel.updateOne({"user_id" : req.session.user_id, "_id" : req.body.todo_id },{
+        const updatedTask = await toDoModel.updateOne({"user_id" : req.session.user.id, "_id" : req.body.todo_id },{
             $set : {
                 title : req.body.title,
                 description : req.body.description,
@@ -129,7 +137,7 @@ exports.statusById = async (req, res) => {
 
 exports.completed = async (req, res) => {
     try {
-        const list = await completedModel.find({ 'user_id': req.session.user_id })
+        const list = await completedModel.find({ 'user_id': req.session.user.id })
         res.status(200).json({
             message: 'Success',
             list: list
@@ -148,7 +156,7 @@ exports.completedSort = async (req, res) => {
             sortCriteria = { priority_level: -1 };
         }
 
-        const list = await completedModel.find({ 'user_id': req.session.user_id }).sort(sortCriteria)
+        const list = await completedModel.find({ 'user_id': req.session.user.id }).sort(sortCriteria)
         res.status(200).json({
             message: 'Completed tasks sorted successfully',
             list: list
