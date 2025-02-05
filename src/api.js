@@ -63,7 +63,8 @@ export const logout = async () => {
   try {
     await api.post('/logout');
   } catch (error) {
-    throw error.response.data;
+    console.log(error)
+    throw error.message;
   }
 };
 
@@ -91,9 +92,10 @@ export const getTodos = async (sort) => {
   try {
     const url = sort ? `/${sort}` : '/';
     const response = await api.get(url);
+
     return response.data;
   } catch (error) {
-    throw error.response.data;
+    throw error.message;
   }
 };
 
@@ -104,7 +106,8 @@ export const getTodos = async (sort) => {
 export const addTodo = async (todoData) => {
   try {
     const response = await api.post('/add', todoData);
-    return response.data;
+    console.log(response)
+    return response;
   } catch (error) {
     throw error.response.data;
   }
@@ -145,7 +148,7 @@ export const deleteTodo = async (todoId) => {
     const response = await api.delete('/delete', { data: { todo_id: todoId } });
     return response.data;
   } catch (error) {
-    throw error.response.data;
+    throw error.message;
   }
 };
 

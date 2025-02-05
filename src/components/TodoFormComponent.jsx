@@ -5,7 +5,7 @@ const TodoFormComponent = ({ initialData = {}, onSave, onCancel, isLoading, erro
     title: "",
     description: "",
     due_date: "",
-    priority: "Medium"
+    priority: "Mid"
   });
 
   // Format date untuk input type="date"
@@ -88,7 +88,7 @@ const TodoFormComponent = ({ initialData = {}, onSave, onCancel, isLoading, erro
             onChange={(e) => setFormData({...formData, priority: e.target.value})}
           >
             <option value="Low">Rendah</option>
-            <option value="Medium">Sedang</option>
+            <option value="Mid">Sedang</option>
             <option value="High">Tinggi</option>
           </select>
         </div>

@@ -6,7 +6,8 @@ import {
   getTodos, 
   getCompletedTodos, 
   toggleTodoStatus, 
-  deleteTodo 
+  deleteTodo,
+  deleteCompletedTodo
 } from '../api';
 
 const Dashboard = () => {
@@ -23,7 +24,8 @@ const Dashboard = () => {
       } else {
         data = await getTodos(sort);
       }
-      setTodos(data);
+
+      setTodos(data.list);
     } catch (error) {
       console.error('Gagal memuat todo:', error);
     }
@@ -44,7 +46,13 @@ const Dashboard = () => {
 
   const handleDelete = async (id) => {
     try {
-      await deleteTodo(id);
+      if(statusFilter == 'completed'){
+        await deleteCompletedTodo(id);
+      }
+      else{
+        await deleteTodo(id);
+
+      }
       await fetchTodos(); // Refresh data setelah delete
     } catch (error) {
       console.error('Gagal menghapus todo:', error);

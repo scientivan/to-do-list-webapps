@@ -28,7 +28,7 @@ const Register = () => {
     }
 
     try {
-      // Panggil API register
+      // Panggil API register 
       await register(formData);
       
       // Jika berhasil, redirect ke login

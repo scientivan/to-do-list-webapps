@@ -28,7 +28,7 @@ const FilterBar = ({ onFilter, onPriorityFilter, onSort }) => {
       >
         <option value="all">Semua Prioritas</option>
         <option value="Low">Prioritas Rendah</option>
-        <option value="Medium">Prioritas Menengah</option>
+        <option value="Mid">Prioritas Menengah</option>
         <option value="High">Prioritas Tinggi</option>
       </select>
       

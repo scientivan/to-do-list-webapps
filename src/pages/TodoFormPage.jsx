@@ -17,6 +17,7 @@ const TodoFormPage = () => {
         try {
           const todos = await getTodos();
           const foundTodo = todos.find(t => t._id === id);
+          
           if (foundTodo) {
             setInitialData(foundTodo);
           } else {
