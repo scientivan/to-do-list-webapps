@@ -13,8 +13,8 @@ const TodoDetailPage = () => {
     const fetchTodo = async () => {
       try {
         const todos = await getTodos();
-        const foundTodo = todos.find(t => t._id === id);
-        
+        const foundTodo = todos.list.find(t => t._id === id);
+        console.log(foundTodo)
         if (foundTodo) {
           setTodo(foundTodo);
         } else {

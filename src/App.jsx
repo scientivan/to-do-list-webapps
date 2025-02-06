@@ -75,15 +75,9 @@ const App = () => {
             isLoggedIn ? <TodoFormPage /> : <Navigate to="/login" />
           }
         />
-        <Route
-          path="/details/:id"
-          element={
-            isLoggedIn ? <TodoFormPage /> : <Navigate to="/login" />
-          }
-        />
 
         <Route
-          path="/todo/:id"
+          path="/details/:id"
           element={
             isLoggedIn ? <TodoDetailPage /> : <Navigate to="/login" />
           }

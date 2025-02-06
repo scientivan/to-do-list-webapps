@@ -32,7 +32,7 @@ const TodoItem = ({ todo, onToggleComplete, onDelete }) => {
         className="flex-1"
         onClick={(e) => {
           if (!e.target.closest('button, a')) {
-            navigate(`/todo/${todo._id}`);
+            navigate(`/details/${todo._id}`);
           }
         }}
       >
@@ -66,13 +66,6 @@ const TodoItem = ({ todo, onToggleComplete, onDelete }) => {
           onClick={(e) => e.stopPropagation()}
         >
           Edit
-        </Link>
-        <Link
-          to={`/details/${todo._id}`}
-          className="px-3 py-1 bg-blue-500 text-white rounded text-center"
-          onClick={(e) => e.stopPropagation()}
-        >
-          Details
         </Link>
         <button
           onClick={(e) => {
