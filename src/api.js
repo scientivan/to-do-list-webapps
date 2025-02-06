@@ -122,7 +122,7 @@ export const editTodo = async (todoData) => {
     const response = await api.put('/edit', todoData);
     return response.data;
   } catch (error) {
-    throw error.response.data;
+    throw error.message;
   }
 };
 
@@ -133,9 +133,9 @@ export const editTodo = async (todoData) => {
 export const toggleTodoStatus = async (id) => {
   try {
     const response = await api.post(`/status/${id}`);
-    return response.data;
+    return response;
   } catch (error) {
-    throw error.response.data;
+    throw error.message;
   }
 };
 

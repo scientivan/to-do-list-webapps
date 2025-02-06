@@ -53,6 +53,7 @@ const TodoItem = ({ todo, onToggleComplete, onDelete }) => {
           onClick={(e) => {
             e.stopPropagation();
             onToggleComplete(todo._id);
+            console.log('tes')
           }}
           className={`px-3 py-1 ${
             todo.completed ? 'bg-yellow-500' : 'bg-green-500'

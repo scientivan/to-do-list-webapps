@@ -21,7 +21,7 @@ const TodoDetailPage = () => {
           navigate('/dashboard');
         }
       } catch (err) {
-        setError('Gagal memuat data todo');
+        setError('Gagal memuat data adfadtodo');
       } finally {
         setIsLoading(false);
       }

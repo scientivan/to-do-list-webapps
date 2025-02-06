@@ -16,8 +16,7 @@ const TodoFormPage = () => {
       if (id) {
         try {
           const todos = await getTodos();
-          const foundTodo = todos.find(t => t._id === id);
-          
+          const foundTodo = todos.list.find(t => t._id === id);
           if (foundTodo) {
             setInitialData(foundTodo);
           } else {
@@ -39,6 +38,8 @@ const TodoFormPage = () => {
     try {
       if (id) {
         // Edit todo
+        console.log(todoData)
+        
         await editTodo({
           todo_id: id,
           ...todoData
