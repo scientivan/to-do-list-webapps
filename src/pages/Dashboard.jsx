@@ -18,14 +18,21 @@ const Dashboard = () => {
 
   const fetchTodos = async () => {
     try {
-      let data;
-      if (statusFilter === 'completed') {
-        data = await getCompletedTodos(sort);
-      } else {
-        data = await getTodos(sort);
-      }
+      let incompleteData, completedData;
 
-      setTodos(data.list);
+      if (statusFilter === 'completed') {
+        completedData = await getCompletedTodos(sort);
+        setTodos(completedData.list);
+      } else {
+        incompleteData = await getTodos(sort);
+        
+        if (statusFilter === 'all') {
+          completedData = await getCompletedTodos(sort);
+          setTodos([...incompleteData.list, ...completedData.list]);
+        } else {
+          setTodos(incompleteData.list);
+        }
+      }
     } catch (error) {
       console.error('Gagal memuat todo:', error);
     }
@@ -33,39 +40,42 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchTodos();
-  }, [statusFilter, sort]);
+  }, [statusFilter, sort, priorityFilter]);
 
   const handleToggleComplete = async (id) => {
     try {
       await toggleTodoStatus(id);
-      await fetchTodos(); // Refresh data setelah update
+      setTodos(prevTodos =>
+        prevTodos.map(todo =>
+          todo._id === id ? { ...todo, completed: !todo.completed } : todo
+        )
+      );
     } catch (error) {
       console.error('Gagal mengubah status:', error);
     }
   };
+  
 
   const handleDelete = async (id) => {
     try {
-      if(statusFilter == 'completed'){
+      if (statusFilter === 'completed') {
         await deleteCompletedTodo(id);
-      }
-      else{
+      } else {
         await deleteTodo(id);
-
       }
-      await fetchTodos(); // Refresh data setelah delete
+      await fetchTodos(); 
     } catch (error) {
       console.error('Gagal menghapus todo:', error);
     }
   };
 
+  const handleFilterChange = (filter) => {
+    setStatusFilter(filter);
+  };
+
   const filteredTodos = todos.filter(todo => {
-    // Filter by status (untuk incomplete)
     if (statusFilter === 'incomplete' && todo.completed) return false;
-    
-    // Filter by priority
     if (priorityFilter !== 'all' && todo.priority !== priorityFilter) return false;
-    
     return true;
   });
 
@@ -73,7 +83,7 @@ const Dashboard = () => {
     <div className="container mx-auto p-6">
       <h1 className="text-3xl font-bold mb-4">Todo List</h1>
       <FilterBar
-        onFilter={setStatusFilter}
+        onFilter={handleFilterChange}
         onPriorityFilter={setPriorityFilter}
         onSort={setSort}
       />

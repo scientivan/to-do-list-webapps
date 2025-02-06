@@ -12,11 +12,10 @@ const TodoItem = ({ todo, onToggleComplete, onDelete }) => {
       case 'low':
         return 'text-green-500';
       default:
-        return 'text-gray-500';
+        return 'text-blue-500';
     }
   };
 
-  // Format tanggal
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(dateString).toLocaleDateString('id-ID', options);
@@ -24,10 +23,10 @@ const TodoItem = ({ todo, onToggleComplete, onDelete }) => {
 
   return (
     <div className={`p-4 rounded-lg shadow-md ${
-      todo.completed ? 'bg-green-100' : 'bg-white'
+      todo.completed ? 'bg-green-100 border-2 border-green-400' : 'bg-white'
     } flex flex-col cursor-pointer hover:shadow-lg transition-shadow
-      min-h-[120px] sm:min-h-[140px] md:min-h-[160px]`}>
-        
+      min-h-[120px] sm:min-h-[140px] md:min-h-[160px]`}
+    >
       <div 
         className="flex-1"
         onClick={(e) => {
@@ -36,7 +35,7 @@ const TodoItem = ({ todo, onToggleComplete, onDelete }) => {
           }
         }}
       >
-        <h3 className={`font-semibold text-lg ${todo.completed ? 'line-through' : ''}`}>
+        <h3 className={`font-semibold text-lg ${todo.completed ? 'line-through text-gray-500' : ''}`}>
           {todo.title}
         </h3>
         <p className="text-gray-500 text-sm line-clamp-2 mb-2">
@@ -49,24 +48,26 @@ const TodoItem = ({ todo, onToggleComplete, onDelete }) => {
       </div>
 
       <div className="flex flex-col md:flex-row gap-2 mt-4 md:mt-2">
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onToggleComplete(todo._id);
-          }}
-          className={`px-3 py-1 ${
-            todo.completed ? 'bg-yellow-500' : 'bg-green-500'
-          } text-white rounded`}
-        >
-          {todo.completed ? 'Undo' : 'Complete'}
-        </button>
-        <Link
-          to={`/edit/${todo._id}`}
-          className="px-3 py-1 bg-blue-500 text-white rounded text-center"
-          onClick={(e) => e.stopPropagation()}
-        >
-          Edit
-        </Link>
+        {!todo.completed && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleComplete(todo._id);
+            }}
+            className="px-3 py-1 bg-green-500 text-white rounded"
+          >
+            Complete
+          </button>
+        )}
+        {!todo.completed && ( // Tambahkan kondisi ini untuk tombol Edit
+          <Link
+            to={`/edit/${todo._id}`}
+            className="px-3 py-1 bg-blue-500 text-white rounded text-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            Edit
+          </Link>
+        )}
         <button
           onClick={(e) => {
             e.stopPropagation();
@@ -76,7 +77,6 @@ const TodoItem = ({ todo, onToggleComplete, onDelete }) => {
         >
           Delete
         </button>
-
       </div>
     </div>
   );

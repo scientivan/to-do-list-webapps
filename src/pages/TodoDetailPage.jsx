@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { getTodos } from "../api";
+import { getTodos, toggleTodoStatus } from "../api";
 
 const TodoDetailPage = () => {
   const { id } = useParams();
@@ -15,13 +15,14 @@ const TodoDetailPage = () => {
         const todos = await getTodos();
         const foundTodo = todos.list.find(t => t._id === id);
         console.log(foundTodo)
+
         if (foundTodo) {
           setTodo(foundTodo);
         } else {
-          navigate('/dashboard');
+          navigate("/dashboard");
         }
       } catch (err) {
-        setError('Gagal memuat data todo');
+        setError("Gagal memuat data todo: " + err.message);
       } finally {
         setIsLoading(false);
       }
@@ -31,8 +32,24 @@ const TodoDetailPage = () => {
   }, [id, navigate]);
 
   const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString('id-ID', options);
+    return new Date(dateString).toLocaleDateString("id-ID", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
+  const handleToggleComplete = async () => {
+    if (!todo) return;
+
+    try {
+      await toggleTodoStatus(todo._id, !todo.completed);
+      const todos = await getTodos();
+      const updatedTodo = todos.list.find(t => t._id === id);
+      setTodo(updatedTodo);
+    } catch (error) {
+      setError("Gagal mengubah status: " + error.message);
+    }
   };
 
   if (isLoading) {
@@ -52,7 +69,7 @@ const TodoDetailPage = () => {
       <div className="bg-white p-6 rounded-lg shadow-md space-y-6">
         <div className="space-y-4">
           <h1 className="text-3xl font-bold text-gray-800">{todo.title}</h1>
-          
+
           <div className="space-y-2">
             <div className="flex items-center gap-2">
               <span className="text-sm font-medium text-gray-500">Status:</span>
@@ -82,9 +99,11 @@ const TodoDetailPage = () => {
               <div>
                 <p className="font-medium text-gray-700">Prioritas:</p>
                 <span className={`inline-block px-2 py-1 rounded ${
-                  todo.priority === 'High' ? 'bg-red-100 text-red-800' : 
-                  todo.priority === 'Medium' ? 'bg-blue-100 text-blue-800' : 
-                  'bg-green-100 text-green-800'
+                  todo.priority === "High"
+                    ? "bg-red-100 text-red-800"
+                    : todo.priority === "Medium"
+                    ? "bg-blue-100 text-blue-800"
+                    : "bg-green-100 text-green-800"
                 }`}>
                   {todo.priority}
                 </span>
