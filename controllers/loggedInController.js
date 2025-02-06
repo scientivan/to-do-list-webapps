@@ -1,9 +1,10 @@
-const { toDoModel, completedModel } = require('../models/dbModel')
+const { toDoModel, completedModel, userModel } = require('../models/dbModel')
 
 exports.mainpage = async (req, res) => {
     try {
-        const list = await toDoModel.find({ 'user_id': req.session.user.id })
-        console.log(list)
+        const user = await userModel.find({'email' : req.session.user.email})
+        const list = await toDoModel.find({ 'user_id':  user[0]._id})
+        
         res.status(200).json({
             message: 'Success',
             list: list
@@ -21,8 +22,8 @@ exports.sort = async (req, res) => {
         } else if (req.params.sort == "priority_level") {
             sortCriteria = { priority_level: -1 };
         }
-
-        const list = await toDoModel.find({ 'user_id': req.session.user.id }).sort(sortCriteria)
+        const user = await userModel.find({'email' : req.session.user.email})
+        const list = await toDoModel.find({ 'user_id': user[0].id }).sort(sortCriteria)
         res.status(200).json({
             message: 'List sorted successfully',
             list: list
@@ -43,16 +44,16 @@ exports.addData = async (req, res) => {
         } else if (req.body.priority == "High") {
             priorityLevel = '3';
         }
-
+        const user = await userModel.find({'email' : req.session.user.email})
         const taskData = {
             "title" : req.body.title,
             "description" : req.body.description,
             "due_date" : req.body.due_date,
             "priority_level": priorityLevel,
             "priority" : req.body.priority,
-            "user_id": req.session.user.id
+            "user_id": user[0]._id
         }
-
+        
         console.log("Task data to insert:", taskData); // Debugging log
 
         await toDoModel.insertMany(taskData); // Cek apakah error dari sini
@@ -66,25 +67,39 @@ exports.addData = async (req, res) => {
 
 exports.editData = async (req, res) => {
     try {
-        
-        const updatedTask = await toDoModel.updateOne({"user_id" : req.session.user.id, "_id" : req.body.todo_id },{
-            $set : {
-                title : req.body.title,
-                description : req.body.description,
-                due_date : req.body.due_date,
-                priority : req.body.priority,
-            }
-        })
+        const user = await userModel.findOne({ email: req.session.user.email });
 
-        if (updatedTask.modifiedCount > 0) {
-            res.status(200).json({ message: 'Task successfully updated' })
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const updatedTask = await toDoModel.updateOne(
+            { user_id: user.id, _id: req.body.todo_id },
+            {
+                $set: {
+                    title: req.body.title,
+                    description: req.body.description,
+                    due_date: req.body.due_date,
+                    priority: req.body.priority,
+                },
+            }
+        );
+
+        if (updatedTask.matchedCount > 0) {
+            return res.status(200).json({
+                message:
+                    updatedTask.modifiedCount > 0
+                        ? "Task successfully updated"
+                        : "No changes were made, but task exists",
+            });
         } else {
-            res.status(404).json({ message: 'Task not found or no changes made' })
+            return res.status(404).json({ message: "Task not found" });
         }
     } catch (err) {
-        res.status(500).json({ message: 'Error updating task', error: err.message })
+        res.status(500).json({ message: "Error updating task", error: err.message });
     }
-}
+};
+
 
 exports.deleteData = async (req, res) => {
     try {
@@ -119,25 +134,29 @@ exports.statusById = async (req, res) => {
         const task = await toDoModel.findById(req.params.id)
         if (task) {
             await completedModel.insertMany(task)
-            await toDoModel.deleteOne({ '_id': req.params.id })
+            await toDoModel.deleteOne(task)
             res.status(200).json({ message: 'Task successfully marked as completed' })
-        } else {
+        }
+        else {
             const completedTask = await completedModel.findById(req.params.id)
             if (completedTask) {
-                await completedModel.deleteOne({ '_id': req.params.id })
+                await toDoModel.insertMany(completedTask)
+                await completedModel.deleteOne(completedTask)
                 res.status(200).json({ message: 'Task successfully restored to To-Do' })
             } else {
                 res.status(404).json({ message: 'Task not found' })
             }
         }
     } catch (err) {
+        console.log(err)
         res.status(500).json({ message: 'Error updating task status', error: err.message })
     }
 }
 
 exports.completed = async (req, res) => {
     try {
-        const list = await completedModel.find({ 'user_id': req.session.user.id })
+        const user = await userModel.find({'email' : req.session.user.email})
+        const list = await completedModel.find({ 'user_id': user[0].id })
         res.status(200).json({
             message: 'Success',
             list: list
@@ -155,8 +174,8 @@ exports.completedSort = async (req, res) => {
         } else if (req.params.sort == "priority_level") {
             sortCriteria = { priority_level: -1 };
         }
-
-        const list = await completedModel.find({ 'user_id': req.session.user.id }).sort(sortCriteria)
+        const user = await userModel.find({'email' : req.session.user.email})
+        const list = await completedModel.find({ 'user_id': user[0].id }).sort(sortCriteria)
         res.status(200).json({
             message: 'Completed tasks sorted successfully',
             list: list
