@@ -53,7 +53,6 @@ const TodoItem = ({ todo, onToggleComplete, onDelete }) => {
           onClick={(e) => {
             e.stopPropagation();
             onToggleComplete(todo._id);
-            console.log('tes')
           }}
           className={`px-3 py-1 ${
             todo.completed ? 'bg-yellow-500' : 'bg-green-500'
@@ -68,6 +67,13 @@ const TodoItem = ({ todo, onToggleComplete, onDelete }) => {
         >
           Edit
         </Link>
+        <Link
+          to={`/details/${todo._id}`}
+          className="px-3 py-1 bg-blue-500 text-white rounded text-center"
+          onClick={(e) => e.stopPropagation()}
+        >
+          Details
+        </Link>
         <button
           onClick={(e) => {
             e.stopPropagation();
@@ -77,6 +83,7 @@ const TodoItem = ({ todo, onToggleComplete, onDelete }) => {
         >
           Delete
         </button>
+
       </div>
     </div>
   );
