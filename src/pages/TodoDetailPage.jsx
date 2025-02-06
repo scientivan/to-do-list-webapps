@@ -43,7 +43,7 @@ const TodoDetailPage = () => {
     if (!todo) return;
 
     try {
-      await toggleTodoStatus(todo._id, !todo.completed);
+      await toggleTodoStatus(todo._id, !todo.is_complete);
       const todos = await getTodos();
       const updatedTodo = todos.list.find(t => t._id === id);
       setTodo(updatedTodo);
@@ -73,7 +73,7 @@ const TodoDetailPage = () => {
           <div className="space-y-2">
             <div className="flex items-center gap-2">
               <span className="text-sm font-medium text-gray-500">Status:</span>
-              {todo.completed ? (
+              {todo.is_complete ? (
                 <span className="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-800">
                   Selesai
                 </span>

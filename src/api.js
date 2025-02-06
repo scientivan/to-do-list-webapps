@@ -172,7 +172,7 @@ export const getCompletedTodos = async (sort) => {
  */
 export const deleteCompletedTodo = async (todoId) => {
   try {
-    const response = await api.delete('/completed/delete', {
+    const response = await api.delete('/delete', {
       data: { todo_id: todoId },
     });
     return response.data;

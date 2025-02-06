@@ -19,16 +19,17 @@ const Dashboard = () => {
   const fetchTodos = async () => {
     try {
       let incompleteData, completedData;
+      incompleteData = await getTodos(sort);
 
       if (statusFilter === 'completed') {
-        completedData = await getCompletedTodos(sort);
-        setTodos(completedData.list);
+        setTodos(incompleteData.list.filter(todo=> todo.is_complete));
       } else {
-        incompleteData = await getTodos(sort);
-        
         if (statusFilter === 'all') {
-          completedData = await getCompletedTodos(sort);
-          setTodos([...incompleteData.list, ...completedData.list]);
+          setTodos(incompleteData.list);
+          // completedData = await getCompletedTodos(sort);
+          // console.log(completedData.list)
+          // setTodos([...incompleteData.list, ...completedData.list]);
+          
         } else {
           setTodos(incompleteData.list);
         }
@@ -47,7 +48,7 @@ const Dashboard = () => {
       await toggleTodoStatus(id);
       setTodos(prevTodos =>
         prevTodos.map(todo =>
-          todo._id === id ? { ...todo, completed: !todo.completed } : todo
+          todo._id === id ? { ...todo, is_complete: !todo.is_complete } : todo
         )
       );
     } catch (error) {
@@ -72,13 +73,11 @@ const Dashboard = () => {
   const handleFilterChange = (filter) => {
     setStatusFilter(filter);
   };
-
   const filteredTodos = todos.filter(todo => {
-    if (statusFilter === 'incomplete' && todo.completed) return false;
+    if (statusFilter === 'incomplete' && todo.is_complete) return false;
     if (priorityFilter !== 'all' && todo.priority !== priorityFilter) return false;
     return true;
   });
-
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-3xl font-bold mb-4">Todo List</h1>

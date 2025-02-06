@@ -15,7 +15,6 @@ const TodoItem = ({ todo, onToggleComplete, onDelete }) => {
         return 'text-blue-500';
     }
   };
-
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(dateString).toLocaleDateString('id-ID', options);
@@ -23,7 +22,7 @@ const TodoItem = ({ todo, onToggleComplete, onDelete }) => {
 
   return (
     <div className={`p-4 rounded-lg shadow-md ${
-      todo.completed ? 'bg-green-100 border-2 border-green-400' : 'bg-white'
+      todo.is_complete ? 'bg-green-100 border-2 border-green-400' : 'bg-white'
     } flex flex-col cursor-pointer hover:shadow-lg transition-shadow
       min-h-[120px] sm:min-h-[140px] md:min-h-[160px]`}
     >
@@ -35,7 +34,7 @@ const TodoItem = ({ todo, onToggleComplete, onDelete }) => {
           }
         }}
       >
-        <h3 className={`font-semibold text-lg ${todo.completed ? 'line-through text-gray-500' : ''}`}>
+        <h3 className={`font-semibold text-lg ${todo.is_complete ? 'line-through text-gray-500' : ''}`}>
           {todo.title}
         </h3>
         <p className="text-gray-500 text-sm line-clamp-2 mb-2">
@@ -48,7 +47,7 @@ const TodoItem = ({ todo, onToggleComplete, onDelete }) => {
       </div>
 
       <div className="flex flex-col md:flex-row gap-2 mt-4 md:mt-2">
-        {!todo.completed && (
+        {!todo.is_complete && (
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -59,7 +58,7 @@ const TodoItem = ({ todo, onToggleComplete, onDelete }) => {
             Complete
           </button>
         )}
-        {!todo.completed && ( // Tambahkan kondisi ini untuk tombol Edit
+        {!todo.is_complete && ( // Tambahkan kondisi ini untuk tombol Edit
           <Link
             to={`/edit/${todo._id}`}
             className="px-3 py-1 bg-blue-500 text-white rounded text-center"
