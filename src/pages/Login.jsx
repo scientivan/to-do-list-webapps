@@ -42,7 +42,7 @@ const Login = ({ onLogin }) => {
             <input
               type="email"
               className="w-full p-2 border rounded mt-1"
-              placeholder="Masukkan email"
+              placeholder="Enter the email yes..."
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -53,7 +53,7 @@ const Login = ({ onLogin }) => {
             <input
               type="password"
               className="w-full p-2 border rounded mt-1"
-              placeholder="Masukkan password"
+              placeholder="Enter the password too"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -69,7 +69,7 @@ const Login = ({ onLogin }) => {
       {/* Divider */}
       <div className="flex items-center my-6">
         <div className="flex-1 border-t border-gray-300"></div>
-        <span className="px-3 text-gray-500 text-sm">atau</span>
+        <span className="px-3 text-gray-500 text-sm">or</span>
         <div className="flex-1 border-t border-gray-300"></div>
       </div>
 
@@ -100,13 +100,13 @@ const Login = ({ onLogin }) => {
             d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
           />
         </svg>
-        <span>Lanjutkan dengan Google</span>
+        <span>Continue with Google</span>
       </a>
 
       <p className="mt-4 text-center text-gray-600">
-        Belum punya akun?{" "}
+        Do not have an account?{" "}
         <Link to="/register" className="text-blue-500 hover:underline">
-          Daftar di sini
+          Register Here
         </Link>
       </p>
       </div>

@@ -10,11 +10,11 @@ const Register = () => {
 
   const validate = () => {
     let newErrors = {};
-    if (!formData.nama) newErrors.nama = "Nama wajib diisi";
-    if (!formData.email) newErrors.email = "Email wajib diisi";
-    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = "Format email tidak valid";
-    if (!formData.password) newErrors.password = "Kata sandi wajib diisi";
-    else if (formData.password.length < 6) newErrors.password = "Kata sandi minimal 6 karakter";
+    if (!formData.nama) newErrors.nama = "Name required";
+    if (!formData.email) newErrors.email = "Email must be filled in";
+    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = "Invalid email format";
+    if (!formData.password) newErrors.password = "Password is required";
+    else if (formData.password.length < 6) newErrors.password = "Password of at least 6 characters";
     return newErrors;
   };
 
@@ -46,14 +46,14 @@ const Register = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-6 rounded-lg shadow-md w-96">
-        <h2 className="text-2xl font-bold text-center mb-6">Registrasi</h2>
+        <h2 className="text-2xl font-bold text-center mb-6">Registration</h2>
         {apiError && <div className="mb-4 text-red-500 text-center">{apiError}</div>}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-gray-700">Nama</label>
+            <label className="block text-gray-700">Name</label>
             <input
               type="text"
-              placeholder="Masukan Nama"
+              placeholder="Your Name?"
               className="w-full p-2 border rounded-lg mt-1"
               value={formData.nama} // Diubah dari 'name' ke 'nama'
               onChange={(e) => setFormData({ ...formData, nama: e.target.value })}
@@ -65,7 +65,7 @@ const Register = () => {
             <label className="block text-gray-700">Email</label>
             <input
               type="email"
-              placeholder="Masukan Email"
+              placeholder="Input Email"
               className="w-full p-2 border rounded-lg mt-1"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -77,7 +77,7 @@ const Register = () => {
             <label className="block text-gray-700">Password</label>
             <input
               type="password"
-              placeholder="Masukan Password"
+              placeholder="Input Password"
               className="w-full p-2 border rounded-lg mt-1"
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
@@ -86,14 +86,14 @@ const Register = () => {
           </div>
 
           <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600">
-            Daftar
+            Continue
           </button>
         </form>
 
         <p className="text-sm text-center mt-4 text-gray-600">
-          Sudah punya akun?{" "}
+          Already have an account?{" "}
           <Link to="/login" className="text-blue-500 hover:underline"> {/* Diubah dari '/' ke '/login' */}
-            Masuk
+            Login Here
           </Link>
         </p>
       </div>

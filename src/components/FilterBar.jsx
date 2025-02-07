@@ -17,28 +17,28 @@ const FilterBar = ({ onFilter, onPriorityFilter, onSort }) => {
         onChange={handleStatusFilterChange} 
         className="p-2 border rounded w-full"
       >
-        <option value="all">Semua Status</option>
-        <option value="completed">Selesai</option>
-        <option value="incomplete">Belum Selesai</option>
+        <option value="all">All Status</option>
+        <option value="completed">Finish</option>
+        <option value="incomplete">Unfinished</option>
       </select>
       
       <select 
         onChange={handlePriorityFilterChange} 
         className="p-2 border rounded w-full"
       >
-        <option value="all">Semua Prioritas</option>
-        <option value="Low">Prioritas Rendah</option>
-        <option value="Mid">Prioritas Menengah</option>
-        <option value="High">Prioritas Tinggi</option>
+        <option value="all">All Priorities</option>
+        <option value="Low">Low Priority</option>
+        <option value="Mid">Mid Priority</option>
+        <option value="High">High Priority</option>
       </select>
       
       <select 
         onChange={handleSortChange} 
         className="p-2 border rounded w-full"
       >
-        <option value="">Urutkan</option>
-        <option value="due_date">Berdasarkan Tanggal</option>
-        <option value="priority_level">Berdasarkan Prioritas</option>
+        <option value="">Sort</option>
+        <option value="due_date">By Date</option>
+        <option value="priority_level">By Priority</option>
       </select>
     </div>
   );

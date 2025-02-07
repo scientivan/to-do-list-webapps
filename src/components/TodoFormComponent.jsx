@@ -30,7 +30,7 @@ const TodoFormComponent = ({ initialData = {}, onSave, onCancel, isLoading, erro
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!formData.due_date) {
-      alert('Harap masukkan tanggal jatuh tempo');
+      alert('Please enter the due date');
       return;
     }
     onSave(formData);
@@ -39,7 +39,7 @@ const TodoFormComponent = ({ initialData = {}, onSave, onCancel, isLoading, erro
   return (
     <div className="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-lg">
       <h2 className="text-xl font-bold mb-4">
-        {initialData._id ? "Edit Todo" : "Tambah Todo"}
+        {initialData._id ? "Edit Todo" : "Create Todo"}
       </h2>
       
       {error && <div className="mb-4 text-red-500 text-center">{error}</div>}
@@ -47,7 +47,7 @@ const TodoFormComponent = ({ initialData = {}, onSave, onCancel, isLoading, erro
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Judul */}
         <div>
-          <label className="block font-medium">Judul</label>
+          <label className="block font-medium">Title</label>
           <input
             type="text"
             className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
@@ -59,7 +59,7 @@ const TodoFormComponent = ({ initialData = {}, onSave, onCancel, isLoading, erro
 
         {/* Deskripsi */}
         <div>
-          <label className="block font-medium">Deskripsi</label>
+          <label className="block font-medium">Description</label>
           <textarea
             className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
             value={formData.description}
@@ -69,7 +69,7 @@ const TodoFormComponent = ({ initialData = {}, onSave, onCancel, isLoading, erro
 
         {/* Tanggal Jatuh Tempo */}
         <div>
-          <label className="block font-medium">Tanggal Jatuh Tempo</label>
+          <label className="block font-medium">Due Date</label>
           <input
             type="date"
             className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
@@ -81,15 +81,15 @@ const TodoFormComponent = ({ initialData = {}, onSave, onCancel, isLoading, erro
 
         {/* Prioritas */}
         <div>
-          <label className="block font-medium">Prioritas</label>
+          <label className="block font-medium">Priority</label>
           <select
             className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
             value={formData.priority}
             onChange={(e) => setFormData({...formData, priority: e.target.value})}
           >
-            <option value="Low">Rendah</option>
-            <option value="Mid">Sedang</option>
-            <option value="High">Tinggi</option>
+            <option value="Low">Low</option>
+            <option value="Mid">Medium</option>
+            <option value="High">High</option>
           </select>
         </div>
 
@@ -101,14 +101,14 @@ const TodoFormComponent = ({ initialData = {}, onSave, onCancel, isLoading, erro
             className="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400"
             disabled={isLoading}
           >
-            Batal
+            Cancel
           </button>
           <button
             type="submit"
             className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
             disabled={isLoading}
           >
-            {isLoading ? 'Menyimpan...' : 'Simpan'}
+            {isLoading ? 'Saving...' : 'Save'}
           </button>
         </div>
       </form>

@@ -41,7 +41,7 @@ const Navbar = ({ isLoggedIn, onLogout }) => {
                 Dashboard
               </Link>
               <Link to="/create" className="text-white hover:underline">
-                Buat Todo
+                Add Todo
               </Link>
               <button
                 onClick={handleLogout}
@@ -75,7 +75,7 @@ const Navbar = ({ isLoggedIn, onLogout }) => {
                 className="block text-white py-2 hover:bg-blue-500"
                 onClick={toggleMenu}
               >
-                Buat Todo
+                Add Todo
               </Link>
               <button
                 onClick={() => {

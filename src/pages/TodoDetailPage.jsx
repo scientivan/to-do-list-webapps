@@ -53,7 +53,7 @@ const TodoDetailPage = () => {
   };
 
   if (isLoading) {
-    return <div className="p-6 text-center">Memuat...</div>;
+    return <div className="p-6 text-center">Wait a moment...</div>;
   }
 
   if (error) {
@@ -61,7 +61,7 @@ const TodoDetailPage = () => {
   }
 
   if (!todo) {
-    return <div className="p-6 text-center">Todo tidak ditemukan!</div>;
+    return <div className="p-6 text-center">Todo is nowhere to be found!</div>;
   }
 
   return (
@@ -75,17 +75,17 @@ const TodoDetailPage = () => {
               <span className="text-sm font-medium text-gray-500">Status:</span>
               {todo.is_complete ? (
                 <span className="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-800">
-                  Selesai
+                  Finish
                 </span>
               ) : (
                 <span className="inline-flex items-center px-3 py-1 rounded-full bg-yellow-100 text-yellow-800">
-                  Dalam Proses
+                  In Process
                 </span>
               )}
             </div>
 
             <div className="space-y-1">
-              <p className="text-lg font-medium text-gray-700">Deskripsi:</p>
+              <p className="text-lg font-medium text-gray-700">Description:</p>
               <pre className="whitespace-pre-wrap font-sans text-gray-600 bg-gray-50 p-4 rounded-lg">
                 {todo.description || "Tidak ada deskripsi"}
               </pre>
@@ -93,11 +93,11 @@ const TodoDetailPage = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <p className="font-medium text-gray-700">Tanggal Jatuh Tempo:</p>
+                <p className="font-medium text-gray-700">Maturity Date:</p>
                 <p className="text-gray-600">{formatDate(todo.due_date)}</p>
               </div>
               <div>
-                <p className="font-medium text-gray-700">Prioritas:</p>
+                <p className="font-medium text-gray-700">Priority:</p>
                 <span className={`inline-block px-2 py-1 rounded ${
                   todo.priority === "High"
                     ? "bg-red-100 text-red-800"
@@ -117,7 +117,7 @@ const TodoDetailPage = () => {
             onClick={() => navigate("/dashboard")}
             className="w-full sm:w-auto px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center gap-2"
           >
-            Kembali ke Dashboard
+            Back to Dashboard
           </button>
         </div>
       </div>
