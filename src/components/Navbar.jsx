@@ -1,6 +1,7 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { logout } from '../api';
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { logout } from "../api";
+import { Menu, X } from "lucide-react";
 
 const Navbar = ({ isLoggedIn, onLogout }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -10,94 +11,104 @@ const Navbar = ({ isLoggedIn, onLogout }) => {
     try {
       await logout();
       onLogout();
-      navigate('/login');
+      navigate("/login");
     } catch (error) {
-      console.error('Gagal logout:', error);
+      console.error("Gagal logout:", error);
     }
   };
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
-    <nav className="bg-blue-600 p-4">
-      <div className="container mx-auto flex justify-between items-center">
-        <Link to="/" className="text-white text-xl font-bold">
+    <nav className="bg-blue-600 shadow-md">
+      <div className="container mx-auto flex justify-between items-center p-4">
+        {/* Logo */}
+        <Link to="/" className="text-white text-2xl font-bold">
           Dolist
         </Link>
 
-        <button
-          onClick={toggleMenu}
-          className="text-white focus:outline-none md:hidden"
-        >
-          {/* Hamburger Icon */}
-        </button>
-
-        <div className="hidden md:flex space-x-4">
+        {/* Desktop Menu */}
+        <div className="hidden md:flex space-x-6">
           {isLoggedIn ? (
             <>
-              <Link to="/dashboard" className="text-white hover:underline">
+              <Link to="/dashboard" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
                 Dashboard
               </Link>
-              <Link to="/create" className="text-white hover:underline">
+              <Link to="/create" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
                 Add Todo
               </Link>
               <button
                 onClick={handleLogout}
-                className="text-white bg-red-500 px-3 py-1 rounded hover:underline"
+                className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
               >
                 Logout
               </button>
             </>
           ) : (
-            <Link to="/login" className="text-white hover:underline">
+            <Link to="/login" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
               Login
             </Link>
           )}
         </div>
+
+        {/* Mobile Menu Button */}
+        <button
+          onClick={toggleMenu}
+          className="md:hidden text-white focus:outline-none"
+        >
+          {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+        </button>
       </div>
 
-      {/* Mobile Menu */}
-      {isMenuOpen && (
-        <div className="md:hidden mt-4">
-          {isLoggedIn ? (
-            <>
-              <Link
-                to="/dashboard"
-                className="block text-white py-2 hover:bg-blue-500"
-                onClick={toggleMenu}
-              >
-                Dashboard
-              </Link>
-              <Link
-                to="/create"
-                className="block text-white py-2 hover:bg-blue-500"
-                onClick={toggleMenu}
-              >
-                Add Todo
-              </Link>
-              <button
-                onClick={() => {
-                  handleLogout();
-                  toggleMenu();
-                }}
-                className="block w-full text-white bg-red-500 px-3 py-2 rounded mt-2 hover:bg-red-600"
-              >
-                Logout
-              </button>
-            </>
-          ) : (
+      {/* Mobile Menu - Smooth Transition */}
+      <div
+        className={`absolute top-0 left-0 w-full h-screen bg-blue-700 text-white flex flex-col items-center justify-center space-y-6 transition-transform duration-300 ${
+          isMenuOpen ? "translate-x-0" : "-translate-x-full"
+        } md:hidden z-50`}
+      >
+        <button
+          onClick={toggleMenu}
+          className="absolute top-5 right-5 text-white"
+        >
+          <X size={32} />
+        </button>
+
+        {isLoggedIn ? (
+          <>
             <Link
-              to="/login"
-              className="block text-white py-2 hover:bg-blue-500"
+              to="/dashboard"
+              className="text-xl hover:underline"
               onClick={toggleMenu}
             >
-              Login
+              Dashboard
             </Link>
-          )}
-        </div>
-      )}
+            <Link
+              to="/create"
+              className="text-xl hover:underline"
+              onClick={toggleMenu}
+            >
+              Add Todo
+            </Link>
+            <button
+              onClick={() => {
+                handleLogout();
+                toggleMenu();
+              }}
+              className="bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-600 transition"
+            >
+              Logout
+            </button>
+          </>
+        ) : (
+          <Link
+            to="/login"
+            className="text-xl hover:underline"
+            onClick={toggleMenu}
+          >
+            Login
+          </Link>
+        )}
+      </div>
     </nav>
   );
 };
