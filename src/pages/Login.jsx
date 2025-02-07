@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { login } from '../api'; // Import fungsi login dari api.js
+import { EyeIcon, EyeOffIcon } from 'lucide-react';
 
 const Login = ({ onLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -26,7 +28,7 @@ const Login = ({ onLogin }) => {
       } else if (err.message.includes('400')) {
         setError('Password salah');
       } else {
-        setError('Terjadi kesalahan saat login');
+        setError('Error on login');
       }
     }
   };
@@ -48,16 +50,23 @@ const Login = ({ onLogin }) => {
               required
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-4 relative">
             <label className="block text-gray-700">Password</label>
             <input
-              type="password"
-              className="w-full p-2 border rounded mt-1"
-              placeholder="Enter the password too"
+              type={showPassword ? "text" : "password"}
+              className="w-full p-2 border rounded mt-1 pr-10"
+              placeholder="Enter the password..."
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+            <button
+              type="button"
+              className="absolute right-3 top-10 transform -translate-y-0"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <EyeOffIcon size={20} /> : <EyeIcon size={20} />}
+            </button>
           </div>
           <button
             type="submit"

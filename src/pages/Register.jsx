@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { register } from '../api'; // Import fungsi register dari api.js
+import { EyeIcon, EyeOffIcon } from 'lucide-react';
 
 const Register = () => {
   const [formData, setFormData] = useState({ nama: "", email: "", password: "" });
+  const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [apiError, setApiError] = useState('');
   const navigate = useNavigate();
@@ -73,15 +75,22 @@ const Register = () => {
             {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
           </div>
 
-          <div>
+          <div className="relative">
             <label className="block text-gray-700">Password</label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Input Password"
-              className="w-full p-2 border rounded-lg mt-1"
+              className="w-full p-2 border rounded-lg mt-1 pr-10"
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
             />
+            <button
+              type="button"
+              className="absolute right-3 top-10 transform -translate-y-0"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <EyeOffIcon size={20} /> : <EyeIcon size={20} />}
+            </button>
             {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
           </div>
 

@@ -24,7 +24,7 @@ const Navbar = ({ isLoggedIn, onLogout }) => {
     <nav className="bg-blue-600 p-4">
       <div className="container mx-auto flex justify-between items-center">
         <Link to="/" className="text-white text-xl font-bold">
-          To-Do App
+          Dolist
         </Link>
 
         <button

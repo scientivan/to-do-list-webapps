@@ -38,7 +38,7 @@ const App = () => {
   };
 
   if (isCheckingAuth) {
-    return <div className="text-center p-8">Memeriksa autentikasi...</div>;
+    return <div className="text-center p-8">Checking authentication...</div>;
   }
 
   return (
