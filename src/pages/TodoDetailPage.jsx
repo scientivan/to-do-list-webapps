@@ -65,7 +65,7 @@ const TodoDetailPage = () => {
   }
 
   return (
-    <div className="p-6 max-w-2xl mx-auto">
+    <div className="p-6 max-w-2xl mx-auto mt-20">
       <div className="bg-white p-6 rounded-lg shadow-md space-y-6">
         <div className="space-y-4">
           <h1 className="text-3xl font-bold text-gray-800">{todo.title}</h1>

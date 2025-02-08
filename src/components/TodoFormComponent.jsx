@@ -37,7 +37,7 @@ const TodoFormComponent = ({ initialData = {}, onSave, onCancel, isLoading, erro
   };
 
   return (
-    <div className="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-lg">
+    <div className="max-w-lg mx-auto mt-20 bg-white p-6 rounded-lg shadow-lg">
       <h2 className="text-xl font-bold mb-4">
         {initialData._id ? "Edit Todo" : "Create Todo"}
       </h2>

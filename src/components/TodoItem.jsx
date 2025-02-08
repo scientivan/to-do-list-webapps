@@ -53,7 +53,7 @@ const TodoItem = ({ todo, onToggleComplete, onDelete }) => {
               e.stopPropagation();
               onToggleComplete(todo._id);
             }}
-            className="px-3 py-1 bg-green-500 text-white rounded"
+            className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600"
           >
             Complete
           </button>
@@ -61,7 +61,7 @@ const TodoItem = ({ todo, onToggleComplete, onDelete }) => {
         {!todo.is_complete && ( // Tambahkan kondisi ini untuk tombol Edit
           <Link
             to={`/edit/${todo._id}`}
-            className="px-3 py-1 bg-blue-500 text-white rounded text-center"
+            className="px-3 py-1 bg-blue-500 text-white rounded text-center hover:bg-blue-600"
             onClick={(e) => e.stopPropagation()}
           >
             Edit
@@ -72,7 +72,7 @@ const TodoItem = ({ todo, onToggleComplete, onDelete }) => {
             e.stopPropagation();
             onDelete(todo._id);
           }}
-          className="px-3 py-1 bg-red-500 text-white rounded"
+          className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
         >
           Delete
         </button>

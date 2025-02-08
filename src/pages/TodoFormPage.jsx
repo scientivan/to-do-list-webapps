@@ -50,7 +50,7 @@ const TodoFormPage = () => {
       }
       navigate("/dashboard");
     } catch (err) {
-      setError(err.message || 'Terjadi kesalahan saat menyimpan');
+      setError(err.message || 'An error occurred while saving');
     } finally {
       setIsLoading(false);
     }
