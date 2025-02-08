@@ -19,7 +19,7 @@ const authRoutes = require('./routes/auth');
 
 
 const corsOptions = {
-    origin: 'http://localhost:5173',
+    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
@@ -81,6 +81,7 @@ app.get('*', (req, res) => {
 })
 
 
-app.listen(process.env.PORT,() => {
-    console.log(`Server running on port ${process.env.PORT} in ${process.env.NODE_ENV} mode.`)
-})
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+    console.log(`Server running on port ${port} in ${process.env.NODE_ENV} mode.`);
+});

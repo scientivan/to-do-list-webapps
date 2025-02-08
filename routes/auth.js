@@ -12,7 +12,7 @@ const router = express.Router();
 
 
 router.get('/check-auth', (req, res) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
+  res.header('Access-Control-Allow-Origin', process.env.FRONTEND_URL || 'http://localhost:5173');
   res.header('Access-Control-Allow-Credentials', 'true');
   if (res.locals.isAuthenticated) {
     res.status(200).json({ authenticated: true });
@@ -52,7 +52,7 @@ router.post('/register', async (req, res) => {
 passport.use(new GoogleStrategy(
   {
     clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    clientSecret: process.env.GOOGLE_CLIENT_SERVER,
     callbackURL: process.env.CALLBACK_URL,
     passReqToCallback: true,
   },
